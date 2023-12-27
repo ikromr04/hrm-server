@@ -30,7 +30,7 @@ class AuthController extends Controller
 
     if (!Hash::check($request->password, $user->password)) {
       throw ValidationException::withMessages([
-        'password' => ['Неправильный пароль.'],
+        'password' => ['Неверный пароль.'],
       ]);
     }
 
