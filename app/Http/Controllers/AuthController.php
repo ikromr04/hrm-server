@@ -15,7 +15,7 @@ class AuthController extends Controller
       return response(['message' => 'Вы не авторизованы.'], 401);
     }
 
-    return response(request()->user('sanctum'), 200);
+    return response(['message' => 'Вы авторизованы.'], 200);
   }
 
   public function login(LoginRequest $request)
