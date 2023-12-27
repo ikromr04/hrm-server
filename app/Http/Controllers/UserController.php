@@ -19,6 +19,10 @@ class UserController extends Controller
   public function show($id) {
     $user = User::withDetails()->find($id);
 
+    if (!$user) {
+      return response(['message' => 'Пользователь не найден.'], 404);
+    }
+
     $prevId = User::where('id', '<', $user->id)->max('id');
     if (!$prevId) {
       $prevId = User::orderBy('id', 'desc')->first()->id;
