@@ -25,11 +25,11 @@ Route::delete('/auth/login', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/employees', [UserController::class, 'index']);
-  
-  Route::put('/employees', [UserController::class, 'update']);
-  // Route::get('/employees/{id}', [UserController::class, 'show']);
-  Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
-  Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
+  Route::get('/employees/{id}', [UserController::class, 'show']);
+
+  // Route::put('/employees', [UserController::class, 'update']);
+  // Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
+  // Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
   // Route::put('/employees/{id}/languages', [UserController::class, 'updateLanguages']);
 
   // Route::get('/employees/{employeeId}/personal', [UserController::class, 'personalData']);

@@ -4,18 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\Education;
 use App\Models\LaborActivity;
-use App\Models\PersonalData;
 use App\Models\User;
-use DateTime;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
   public function index()
   {
-    return User::detailed()->get();
+    $users = User::withDetails()->withNeighbours()->get();
+
+    return response($users, 200);
+  }
+
+  public function show($id) {
+    $user = User::withDetails()->find($id);
+
+    $prevId = User::where('id', '<', $user->id)->max('id');
+    if (!$prevId) {
+      $prevId = User::orderBy('id', 'desc')->first()->id;
+    }
+
+    $nextId = User::where('id', '>', $user->id)->min('id');
+    if (!$nextId) {
+      $nextId = User::orderBy('id', 'asc')->first()->id;
+    }
+
+    $user->previous = $prevId;
+    $user->next = $nextId;
+
+    return response($user, 200);
   }
 
   public function store()
@@ -74,51 +91,40 @@ class UserController extends Controller
     // return $user;
   }
 
-  public function show($id) {
-    $user = User::find($id);
+  // public function updatePersonalData($employeeId)
+  // {
+  //   $personalData = PersonalData::where('user_id', $employeeId)->first();
+  //   if ($personalData) {
+  //     $personalData->update([
+  //       'birth_date' => request('birth_date'),
+  //       'gender' => request('gender'),
+  //       'nationality' => request('nationality'),
+  //       'citizenship' => request('citizenship'),
+  //       'address' => request('address'),
+  //       'email' => request('email'),
+  //       'tel_1' => request('tel_1'),
+  //       'tel_2' => request('tel_2'),
+  //       'family_status' => request('family_status'),
+  //       'children' => request('children'),
+  //     ]);
+  //     return $personalData;
+  //   }
+  //   $personalData = PersonalData::create([
+  //     'user_id' => $employeeId,
+  //     'birth_date' => request('birth_date'),
+  //     'gender' => request('gender'),
+  //     'nationality' => request('nationality'),
+  //     'citizenship' => request('citizenship'),
+  //     'address' => request('address'),
+  //     'email' => request('email'),
+  //     'tel_1' => request('tel_1'),
+  //     'tel_2' => request('tel_2'),
+  //     'family_status' => request('family_status'),
+  //     'children' => request('children'),
+  //   ]);
 
-    return $user;
-  }
-
-  public function personalData($employeeId)
-  {
-    return PersonalData::where('user_id', $employeeId)->first();
-  }
-
-  public function updatePersonalData($employeeId)
-  {
-    $personalData = PersonalData::where('user_id', $employeeId)->first();
-    if ($personalData) {
-      $personalData->update([
-        'birth_date' => request('birth_date'),
-        'gender' => request('gender'),
-        'nationality' => request('nationality'),
-        'citizenship' => request('citizenship'),
-        'address' => request('address'),
-        'email' => request('email'),
-        'tel_1' => request('tel_1'),
-        'tel_2' => request('tel_2'),
-        'family_status' => request('family_status'),
-        'children' => request('children'),
-      ]);
-      return $personalData;
-    }
-    $personalData = PersonalData::create([
-      'user_id' => $employeeId,
-      'birth_date' => request('birth_date'),
-      'gender' => request('gender'),
-      'nationality' => request('nationality'),
-      'citizenship' => request('citizenship'),
-      'address' => request('address'),
-      'email' => request('email'),
-      'tel_1' => request('tel_1'),
-      'tel_2' => request('tel_2'),
-      'family_status' => request('family_status'),
-      'children' => request('children'),
-    ]);
-
-    return $personalData;
-  }
+  //   return $personalData;
+  // }
 
   public function updateAvatar($id)
   {
