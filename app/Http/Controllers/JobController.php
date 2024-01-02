@@ -9,6 +9,6 @@ class JobController extends Controller
 {
   public function index()
   {
-    return Job::select(['id', 'title'])->get();
+    return Job::get();
   }
 }
