@@ -25,7 +25,7 @@ class CreateDetailsTable extends Migration
       $table->string('tel_1')->nullable();
       $table->string('tel_2')->nullable();
       $table->string('family_status')->nullable();
-      $table->text('children')->nullable();
+      $table->json('children')->nullable();
       $table->timestamps();
     });
   }

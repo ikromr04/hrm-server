@@ -15,6 +15,7 @@ class User extends Authenticatable
   protected $guarded = [];
   protected $casts = ['email_verified_at' => 'datetime'];
   protected $hidden = ['password', 'pivot'];
+  protected $appends = ['previous', 'next'];
 
   protected static function booted()
   {
@@ -34,27 +35,29 @@ class User extends Authenticatable
     return '';
   }
 
-  public function scopeWithDetails($query)
-  {
-    return $query->with(['jobs', 'positions', 'languages', 'details']);
-  }
-
-  public function scopeWithNeighbours($query)
+  public function getPreviousAttribute()
   {
     $prevId = User::where('id', '<', $this->attributes['id'])->max('id');
     if (!$prevId) {
       $prevId = User::orderBy('id', 'desc')->first()->id;
     }
 
+    return $prevId;
+  }
+
+  public function getNextAttribute()
+  {
     $nextId = User::where('id', '>', $this->attributes['id'])->min('id');
     if (!$nextId) {
       $nextId = User::orderBy('id', 'asc')->first()->id;
     }
 
-    $query->addSelect([
-      'previous' => $prevId,
-      'next' => $nextId,
-    ]);
+    return $nextId;
+  }
+
+  public function scopeWithDetails($query)
+  {
+    return $query->with(['jobs', 'positions', 'languages', 'details']);
   }
 
   public function details()

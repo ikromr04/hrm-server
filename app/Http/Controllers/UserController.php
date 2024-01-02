@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Education;
 use App\Models\LaborActivity;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\EmployeeUpdateRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
   public function index()
   {
-    $users = User::withDetails()->withNeighbours()->get();
+    $users = User::withDetails()->get();
 
     return response($users, 200);
   }
@@ -22,19 +25,6 @@ class UserController extends Controller
     if (!$user) {
       return response(['message' => 'Пользователь не найден.'], 404);
     }
-
-    $prevId = User::where('id', '<', $user->id)->max('id');
-    if (!$prevId) {
-      $prevId = User::orderBy('id', 'desc')->first()->id;
-    }
-
-    $nextId = User::where('id', '>', $user->id)->min('id');
-    if (!$nextId) {
-      $nextId = User::orderBy('id', 'asc')->first()->id;
-    }
-
-    $user->previous = $prevId;
-    $user->next = $nextId;
 
     return response($user, 200);
   }
@@ -58,19 +48,26 @@ class UserController extends Controller
     // return $user;
   }
 
-  public function update($employeeId)
+  public function update(EmployeeUpdateRequest $request, $id)
   {
-    request()->validate([
-      'name' => 'required|string',
-      'surname' => 'required|string',
-      'patronymic' => 'nullable|string|min:3',
-    ]);
-    // request()->validate([
-    //   'name' => 'required|string',
-    //   'surname' => 'required|string',
-    //   'started_work_at' => 'required',
-    // ]);
+    $user = User::withoutGlobalScopes()->find($id);
+    if ($user->login != $request->login) {
+      $validator = Validator::make($request->all(), ['login' => 'unique:users,login']);
+      if ($validator->fails()) {
+        throw ValidationException::withMessages([
+          'login' => ['Этот логин уже занят.'],
+        ]);
+      }
+    }
 
+    $user->name = $request->name;
+    $user->surname = $request->surname;
+    $request->patronymic && $user->patronymic = $request->patronymic;
+    $user->login = $request->login;
+    $user->started_work_at = $request->started_work_at;
+    $user->update();
+
+    return User::withDetails()->find($id);
     // $user = User::find($employeeId);
 
     // if (request('login') != $user->login) {

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
       $table->string('login')->unique();
       $table->string('password');
       $table->string('avatar')->nullable();
-      $table->timestamp('started_work_at')->default(DB::raw('CURRENT_TIMESTAMP'));;
+      $table->timestamp('started_work_at')->default(DB::raw('CURRENT_TIMESTAMP'));
       $table->rememberToken();
       $table->timestamps();
     });
