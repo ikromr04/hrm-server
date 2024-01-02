@@ -67,6 +67,8 @@ class UserController extends Controller
     $user->started_work_at = $request->started_work_at;
     $user->update();
 
+    $request->has('jobs') && $user->jobs()->sync($request->jobs);
+
     return User::withDetails()->find($id);
     // $user = User::find($employeeId);
 
