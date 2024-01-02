@@ -68,6 +68,7 @@ class UserController extends Controller
     $user->update();
 
     $request->has('jobs') && $user->jobs()->sync($request->jobs);
+    $request->has('positions') && $user->positions()->sync($request->positions);
 
     return User::withDetails()->find($id);
     // $user = User::find($employeeId);

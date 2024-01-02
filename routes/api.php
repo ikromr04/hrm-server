@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::get('/jobs', [JobController::class, 'index']);
 
-  // Route::get('/positions', [PositionController::class, 'index']);
+  Route::get('/positions', [PositionController::class, 'index']);
 
   // Route::get('/languages', [LanguageController::class, 'index']);
 
