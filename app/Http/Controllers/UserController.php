@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Education;
-use App\Models\LaborActivity;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\Detail;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -20,12 +16,9 @@ class UserController extends Controller
     return response($users, 200);
   }
 
-  public function show($id) {
+  public function show($id)
+  {
     $user = User::withDetails()->find($id);
-
-    if (!$user) {
-      return response(['message' => 'Пользователь не найден.'], 404);
-    }
 
     return response($user, 200);
   }
@@ -33,38 +26,29 @@ class UserController extends Controller
   public function update(EmployeeUpdateRequest $request, $id)
   {
     $user = User::withoutGlobalScopes()->find($id);
-    if ($user->login != $request->login) {
-      $validator = Validator::make($request->all(), ['login' => 'unique:users,login']);
-      if ($validator->fails()) {
-        throw ValidationException::withMessages([
-          'login' => ['Этот логин уже занят.'],
-        ]);
-      }
-    }
-
-    $user->name = $request->name;
-    $user->surname = $request->surname;
-    $request->has('patronymic') && $user->patronymic = $request->patronymic;
-    $user->login = $request->login;
-    $user->started_work_at = $request->started_work_at;
-    $user->update();
+    $request->has('name') && $user->name = $request->input('name');
+    $request->has('surname') && $user->surname = $request->input('surname');
+    $request->has('patronymic') && $user->patronymic = $request->input('patronymic');
+    $request->has('login') && $user->login = $request->input('login');
+    $request->has('started_work_at') && $user->started_work_at = $request->input('started_work_at');
+    $user->isDirty() && $user->update();
 
     $request->has('jobs') && $user->jobs()->sync($request->jobs);
     $request->has('positions') && $user->positions()->sync($request->positions);
 
     if ($request->has('details')) {
-      $details = Detail::where('user_id', $user->id)->first();
-      $request->has('details.birth_date') && $details->birth_date = $request->input('details.birth_date');
-      $request->has('details.gender') && $details->gender = $request->input('details.gender');
-      $request->has('details.nationality') && $details->nationality = $request->input('details.nationality');
-      $request->has('details.citizenship') && $details->citizenship = $request->input('details.citizenship');
-      $request->has('details.address') && $details->address = $request->input('details.address');
-      $request->has('details.email') && $details->email = $request->input('details.email');
-      $request->has('details.tel_1') && $details->tel_1 = $request->input('details.tel_1');
-      $request->has('details.tel_2') && $details->tel_2 = $request->input('details.tel_2');
-      $request->has('details.family_status') && $details->family_status = $request->input('details.family_status');
-      $request->has('details.children') && $details->children = $request->input('details.children');
-      $details->update();
+      $detail = Detail::where('user_id', $user->id)->first();
+      $request->has('details.birth_date') && $detail->birth_date = $request->input('details.birth_date');
+      $request->has('details.gender') && $detail->gender = $request->input('details.gender');
+      $request->has('details.nationality') && $detail->nationality = $request->input('details.nationality');
+      $request->has('details.citizenship') && $detail->citizenship = $request->input('details.citizenship');
+      $request->has('details.address') && $detail->address = $request->input('details.address');
+      $request->has('details.email') && $detail->email = $request->input('details.email');
+      $request->has('details.tel_1') && $detail->tel_1 = $request->input('details.tel_1');
+      $request->has('details.tel_2') && $detail->tel_2 = $request->input('details.tel_2');
+      $request->has('details.family_status') && $detail->family_status = $request->input('details.family_status');
+      $request->has('details.children') && $detail->children = $request->input('details.children');
+      $detail->isDirty() && $detail->update();
     }
 
     return User::withDetails()->find($id);

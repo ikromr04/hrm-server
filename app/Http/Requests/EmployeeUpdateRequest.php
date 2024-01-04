@@ -13,12 +13,15 @@ class EmployeeUpdateRequest extends FormRequest
 
   public function rules()
   {
-    return [
-      'name' => 'required',
-      'surname' => 'required',
+    $rules = [];
+
+    $this->has('name') && $rules = array_merge($rules, ['name' => 'required']);
+    $this->has('surname') && $rules = array_merge($rules, ['surname' => 'required']);
+    $this->has('login') && $rules = array_merge($rules, ['login' => 'required|unique:users,login']);
+    $this->has('started_work_at') && $rules = array_merge($rules, ['started_work_at' => 'required|date']);
+
+    return array_merge($rules, [
       'patronymic' => 'nullable',
-      'login' => 'required',
-      'started_work_at' => 'required|date',
       'jobs' => 'nullable|array',
       'positions' => 'nullable|array',
       'languages' => 'nullable|array',
@@ -31,11 +34,11 @@ class EmployeeUpdateRequest extends FormRequest
       'details.citizenship' => 'nullable',
       'details.address' => 'nullable',
       'details.email' => 'nullable|email',
-      'details.tel1' => 'nullable',
-      'details.tel2' => 'nullable',
-      'details.familyStatus' => 'nullable',
+      'details.tel_1' => 'nullable',
+      'details.tel_2' => 'nullable',
+      'details.family_status' => 'nullable',
       'details.children' => 'nullable|array',
-    ];
+    ]);
   }
 
   public function messages()
@@ -44,6 +47,7 @@ class EmployeeUpdateRequest extends FormRequest
       'name.required' => 'Поле имя обязательно для заполнения.',
       'surname.required' => 'Поле фамилия обязательно для заполнения.',
       'login.required' => 'Поле логин обязательно для заполнения.',
+      'login.unique' => 'Этот логин уже занят.',
       'started_work_at.required' => 'Поле \'начало работы\' обязательно для заполнения.',
       'started_work_at.date' => 'Поле \'начало работы\' не является допустимой датой.',
       'jobs.array' => 'Поле должен содержать массив должностей.',
