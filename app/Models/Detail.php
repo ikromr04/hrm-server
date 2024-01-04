@@ -11,6 +11,7 @@ class Detail extends Model
 
   protected $guarded = [];
   protected $hidden = ['user_id'];
+  protected $casts = ['children' => 'array'];
 
   public function user()
   {

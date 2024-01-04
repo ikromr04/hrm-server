@@ -35,7 +35,6 @@ class EmployeeUpdateRequest extends FormRequest
       'details.tel2' => 'nullable',
       'details.familyStatus' => 'nullable',
       'details.children' => 'nullable|array',
-      'details.children.*' => 'required|date',
     ];
   }
 
@@ -56,7 +55,6 @@ class EmployeeUpdateRequest extends FormRequest
       'details.birth_date.date' => 'Дата рождения не является допустимой датой.',
       'details.email.email' => 'E-mail должен быть действительным адресом электронной почты.',
       'details.children.array' => 'Поле дети должен быть массивом.',
-      'details.children.*.date' => 'Поле не является допустимой датой.',
     ];
   }
 }
