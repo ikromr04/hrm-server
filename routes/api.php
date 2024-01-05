@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/jobs', [JobController::class, 'index']);
 
   Route::get('/positions', [PositionController::class, 'index']);
+
+  Route::get('/languages', [LanguageController::class, 'index']);
 });

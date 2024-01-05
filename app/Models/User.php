@@ -14,8 +14,8 @@ class User extends Authenticatable
 
   protected $guarded = [];
   protected $casts = ['email_verified_at' => 'datetime'];
-  protected $hidden = ['password', 'pivot'];
-  protected $appends = ['previous', 'next'];
+  protected $hidden = ['password', 'pivot', 'langs'];
+  protected $appends = ['previous', 'next', 'languages'];
 
   protected static function booted()
   {
@@ -55,9 +55,22 @@ class User extends Authenticatable
     return $nextId;
   }
 
+  public function getLanguagesAttribute()
+  {
+    $langs = [];
+    foreach ($this->langs as $key => $value) {
+      $langs[$key] = [
+        'id' => $value->id,
+        'name' => $value->name,
+        'level' => $value->pivot->level,
+      ];
+    }
+    return $langs;
+  }
+
   public function scopeWithDetails($query)
   {
-    return $query->with(['jobs', 'positions', 'languages', 'details']);
+    return $query->with(['jobs', 'positions', 'langs', 'details']);
   }
 
   public function details()
@@ -78,18 +91,6 @@ class User extends Authenticatable
       );
   }
 
-  public function educations()
-  {
-    return $this->hasMany(Education::class)
-      ->orderBy('started_at', 'desc');
-  }
-
-  public function activities()
-  {
-    return $this->hasMany(LaborActivity::class)
-      ->orderBy('hired_at', 'desc');
-  }
-
   public function jobs()
   {
     return $this->belongsToMany(Job::class)
@@ -102,10 +103,21 @@ class User extends Authenticatable
       ->select('id', 'title');
   }
 
-  public function languages()
+  public function educations()
+  {
+    return $this->hasMany(Education::class)
+      ->orderBy('started_at', 'desc');
+  }
+
+  public function activities()
+  {
+    return $this->hasMany(LaborActivity::class)
+      ->orderBy('hired_at', 'desc');
+  }
+
+  public function langs()
   {
     return $this->belongsToMany(Language::class)
-      ->withPivot('level')
-      ->select('id', 'name', 'level');
+      ->withPivot('level');
   }
 }

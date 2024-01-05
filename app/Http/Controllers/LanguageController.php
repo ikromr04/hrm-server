@@ -9,6 +9,8 @@ class LanguageController extends Controller
 {
   public function index()
   {
-    return Language::orderBy('name')->get();
+    $languages = Language::get();
+
+    return $languages;
   }
 }
