@@ -35,6 +35,13 @@ class UserController extends Controller
 
     $request->has('jobs') && $user->jobs()->sync($request->jobs);
     $request->has('positions') && $user->positions()->sync($request->positions);
+    if ($request->has('languages')) {
+      $languages = [];
+      foreach ($request->input('languages') as $language) {
+        $languages[$language['id']] = ['level' => $language['level']];
+      }
+      $user->langs()->sync($languages);
+    }
 
     if ($request->has('details')) {
       $detail = Detail::where('user_id', $user->id)->first();
