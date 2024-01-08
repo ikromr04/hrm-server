@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\Detail;
+use App\Models\Education;
 
 class UserController extends Controller
 {
@@ -90,5 +91,12 @@ class UserController extends Controller
     DB::table('users')->where('id', $id)->update(['avatar' => null ]);
 
     return '';
+  }
+
+  public function educations($id)
+  {
+    $educations = Education::where('user_id', $id)->get();
+
+    return $educations;
   }
 }

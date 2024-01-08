@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('/employees/{id}', [UserController::class, 'update']);
   Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
   Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
+  Route::get('/employees/{id}/educations', [UserController::class, 'educations']);
 
   Route::get('/jobs', [JobController::class, 'index']);
 
