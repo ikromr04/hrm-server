@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
   Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
   Route::get('/employees/{id}/educations', [UserController::class, 'educations']);
-  Route::get('/employees/{id}/activities', [UserController::class, 'educations']);
+  Route::get('/employees/{id}/activities', [UserController::class, 'activities']);
 
   Route::get('/jobs', [JobController::class, 'index']);
 

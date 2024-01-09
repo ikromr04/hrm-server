@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EmployeeUpdateRequest;
+use App\Models\Activity;
 use App\Models\Detail;
 use App\Models\Education;
 
@@ -98,5 +99,12 @@ class UserController extends Controller
     $educations = Education::where('user_id', $id)->orderBy('started_at', 'desc')->get();
 
     return response($educations, 200);
+  }
+
+  public function activities($id)
+  {
+    $activities = Activity::where('user_id', $id)->orderBy('hired_at', 'desc')->get();
+
+    return response($activities, 200);
   }
 }
