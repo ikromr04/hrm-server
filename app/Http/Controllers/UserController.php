@@ -95,7 +95,7 @@ class UserController extends Controller
 
   public function educations($id)
   {
-    $educations = Education::where('user_id', $id)->get();
+    $educations = Education::where('user_id', $id)->orderBy('started_at', 'desc')->get();
 
     return response($educations, 200);
   }

@@ -106,7 +106,7 @@ class User extends Authenticatable
   public function educations()
   {
     return $this->hasMany(Education::class)
-      ->orderBy('started_at', 'desc');
+      ->orderBy('started_at', 'asc');
   }
 
   public function activities()
