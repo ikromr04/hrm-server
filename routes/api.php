@@ -38,4 +38,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::post('/educations', [EducationController::class, 'store']);
   Route::put('/educations/{id}', [EducationController::class, 'update']);
+  Route::delete('/educations/{id}', [EducationController::class, 'delete']);
 });
