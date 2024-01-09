@@ -19,7 +19,7 @@ class User extends Authenticatable
 
   protected static function booted()
   {
-    static::addGlobalScope('adapt_to_client', function (Builder $builder) {
+    static::addGlobalScope('adapt-to-client', function (Builder $builder) {
       $builder->select(
         'id', 'name', 'surname', 'patronymic', 'login', 'password', 'avatar',
         'started_work_at as startedWorkAt'

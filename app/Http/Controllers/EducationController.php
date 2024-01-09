@@ -2,37 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EducationsStoreRequest;
 use App\Models\Education;
-use Illuminate\Http\Request;
 
 class EducationController extends Controller
 {
-  public function update($educationId)
+  public function store(EducationsStoreRequest $request)
   {
-    request()->validate([
-      'started_at' => 'required',
-      'graduated_at' => 'required',
-      'institution' => 'required',
-      'faculty' => 'required',
-      'form' => 'required',
-      'speciality' => 'required',
+    $education = Education::create([
+      'user_id' => $request->input('user_id'),
+      'institution' => $request->input('institution'),
+      'faculty' => $request->input('faculty'),
+      'speciality' => $request->input('speciality'),
+      'form' => $request->input('form'),
+      'started_at' => $request->input('started_at'),
+      'graduated_at' => $request->input('graduated_at'),
     ]);
 
-    Education::find($educationId)->update([
-      'started_at' => request('started_at'),
-      'graduated_at' => request('graduated_at'),
-      'institution' => request('institution'),
-      'faculty' => request('faculty'),
-      'form' => request('form'),
-      'speciality' => request('speciality'),
-    ]);
-
-    return Education::find($educationId);
-  }
-
-  public function delete($educationId)
-  {
-    Education::find($educationId)->delete();
-    return;
+    return response(Education::find($education->id), 200);
   }
 }

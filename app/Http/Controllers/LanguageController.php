@@ -11,6 +11,6 @@ class LanguageController extends Controller
   {
     $languages = Language::get();
 
-    return $languages;
+    return response($languages, 200);
   }
 }

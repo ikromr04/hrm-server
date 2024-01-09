@@ -15,7 +15,7 @@ class Position extends Model
 
   protected static function booted()
   {
-    static::addGlobalScope('adapt', function (Builder $builder) {
+    static::addGlobalScope('adapt-to-client', function (Builder $builder) {
       $builder->select('id', 'title');
     });
   }

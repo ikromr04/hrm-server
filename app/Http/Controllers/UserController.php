@@ -59,7 +59,7 @@ class UserController extends Controller
       $detail->isDirty() && $detail->update();
     }
 
-    return User::withDetails()->find($id);
+    return response(User::withDetails()->find($id), 200);
   }
 
   public function updateAvatar($id)
@@ -77,7 +77,7 @@ class UserController extends Controller
 
     DB::table('users')->where('id', $id)->update(['avatar' => $avatar]);
 
-    return asset($avatar);
+    return response(asset($avatar), 200);
   }
 
   public function deleteAvatar($id)
@@ -90,13 +90,13 @@ class UserController extends Controller
 
     DB::table('users')->where('id', $id)->update(['avatar' => null ]);
 
-    return '';
+    return response('', 200);
   }
 
   public function educations($id)
   {
     $educations = Education::where('user_id', $id)->get();
 
-    return $educations;
+    return response($educations, 200);
   }
 }

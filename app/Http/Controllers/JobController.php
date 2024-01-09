@@ -9,6 +9,8 @@ class JobController extends Controller
 {
   public function index()
   {
-    return Job::get();
+    $jobs = Job::get();
+
+    return response($jobs, 200);
   }
 }

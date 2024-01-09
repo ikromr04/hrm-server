@@ -16,12 +16,12 @@ class CreateEducationTable extends Migration
     Schema::create('education', function (Blueprint $table) {
       $table->id();
       $table->integer('user_id');
-      $table->timestamp('started_at');
-      $table->timestamp('graduated_at');
       $table->string('institution');
       $table->string('faculty');
-      $table->string('form');
       $table->string('speciality');
+      $table->string('form');
+      $table->timestamp('started_at');
+      $table->timestamp('graduated_at');
       $table->timestamps();
     });
   }

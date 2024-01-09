@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PositionController;
@@ -34,4 +35,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/positions', [PositionController::class, 'index']);
 
   Route::get('/languages', [LanguageController::class, 'index']);
+
+  Route::post('/educations', [EducationController::class, 'store']);
 });

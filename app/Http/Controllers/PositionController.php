@@ -9,6 +9,8 @@ class PositionController extends Controller
 {
   public function index()
   {
-    return Position::get();
+    $positions = Position::get();
+    
+    return response($positions, 200);
   }
 }
