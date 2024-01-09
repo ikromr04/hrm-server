@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EducationsStoreRequest extends FormRequest
+class EducationsUpdateRequest extends FormRequest
 {
   public function authorize()
   {
@@ -13,21 +13,20 @@ class EducationsStoreRequest extends FormRequest
 
   public function rules()
   {
-    return [
-      'user_id' => 'required',
-      'institution' => 'required',
-      'faculty' => 'required',
-      'speciality' => 'required',
-      'form' => 'required',
-      'started_at' => 'required|date',
-      'graduated_at' => 'required|date',
-    ];
+    $rules = [];
+    $this->has('institution') && $rules = array_merge($rules, ['institution' => 'required']);
+    $this->has('faculty') && $rules = array_merge($rules, ['faculty' => 'required']);
+    $this->has('speciality') && $rules = array_merge($rules, ['speciality' => 'required']);
+    $this->has('form') && $rules = array_merge($rules, ['form' => 'required']);
+    $this->has('started_at') && $rules = array_merge($rules, ['started_at' => 'required|date']);
+    $this->has('graduated_at') && $rules = array_merge($rules, ['graduated_at' => 'required|date']);
+
+    return $rules;
   }
 
   public function messages()
   {
     return [
-      'user_id.required' => 'id сотрудника обязательно для заполнения.',
       'institution.required' => 'Укажите учебное заведение.',
       'faculty.required' => 'Поле факультет обязательно для заполнения.',
       'speciality.required' => 'Поле специальность обязательно для заполнения.',

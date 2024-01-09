@@ -37,4 +37,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/languages', [LanguageController::class, 'index']);
 
   Route::post('/educations', [EducationController::class, 'store']);
+  Route::put('/educations/{id}', [EducationController::class, 'update']);
 });

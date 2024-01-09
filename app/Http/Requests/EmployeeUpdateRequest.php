@@ -14,7 +14,6 @@ class EmployeeUpdateRequest extends FormRequest
   public function rules()
   {
     $rules = [];
-
     $this->has('name') && $rules = array_merge($rules, ['name' => 'required']);
     $this->has('surname') && $rules = array_merge($rules, ['surname' => 'required']);
     $this->has('login') && $rules = array_merge($rules, ['login' => 'required|unique:users,login']);
