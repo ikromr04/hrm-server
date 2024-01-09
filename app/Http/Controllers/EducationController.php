@@ -41,6 +41,6 @@ class EducationController extends Controller
   {
     Education::find($id)->delete();
 
-    return response('Образование удалено.', 204);
+    return response(['message' => 'Данные удалены.'], 204);
   }
 }

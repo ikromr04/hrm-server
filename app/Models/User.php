@@ -103,6 +103,12 @@ class User extends Authenticatable
       ->select('id', 'title');
   }
 
+  public function langs()
+  {
+    return $this->belongsToMany(Language::class)
+      ->withPivot('level');
+  }
+
   public function educations()
   {
     return $this->hasMany(Education::class)
@@ -111,13 +117,7 @@ class User extends Authenticatable
 
   public function activities()
   {
-    return $this->hasMany(LaborActivity::class)
+    return $this->hasMany(Activity::class)
       ->orderBy('hired_at', 'desc');
-  }
-
-  public function langs()
-  {
-    return $this->belongsToMany(Language::class)
-      ->withPivot('level');
   }
 }

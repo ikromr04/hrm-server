@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobController;
@@ -29,6 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
   Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
   Route::get('/employees/{id}/educations', [UserController::class, 'educations']);
+  Route::get('/employees/{id}/activities', [UserController::class, 'educations']);
 
   Route::get('/jobs', [JobController::class, 'index']);
 
@@ -39,4 +41,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('/educations', [EducationController::class, 'store']);
   Route::put('/educations/{id}', [EducationController::class, 'update']);
   Route::delete('/educations/{id}', [EducationController::class, 'delete']);
+
+  Route::post('/activities', [ActivityController::class, 'store']);
+  Route::put('/activities/{id}', [ActivityController::class, 'update']);
+  Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
 });
