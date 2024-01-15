@@ -70,7 +70,7 @@ class User extends Authenticatable
 
   public function scopeWithDetails($query)
   {
-    return $query->with(['jobs', 'positions', 'langs', 'details']);
+    return $query->orderBy('surname')->with(['jobs', 'positions', 'langs', 'details']);
   }
 
   public function details()
