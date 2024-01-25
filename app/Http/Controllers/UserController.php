@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeStoreRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EmployeeUpdateRequest;
@@ -23,6 +24,11 @@ class UserController extends Controller
     $user = User::withDetails()->find($id);
 
     return response($user, 200);
+  }
+
+  public function store(EmployeeStoreRequest $request)
+  {
+    
   }
 
   public function update(EmployeeUpdateRequest $request, $id)

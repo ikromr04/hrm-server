@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -37,6 +40,24 @@ class AuthController extends Controller
     $user->token = $user->createToken('access_token')->plainTextToken;
 
     return response($user, 200);
+  }
+
+  public function store(UserStoreRequest $request)
+  {
+    $password = Str::random(8);
+
+    User::create([
+      'name' => $request->input('name'),
+      'surname' => $request->input('surname'),
+      'login' => $request->input('login'),
+      'password' => bcrypt($password),
+      'started_work_at' => new DateTime(),
+    ]);
+
+    return response([
+      'login' => $request->login,
+      'password' => $password,
+    ], 201);
   }
 
   public function logout()
