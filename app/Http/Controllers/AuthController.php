@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthStoreRequest;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Hash;
@@ -42,7 +42,7 @@ class AuthController extends Controller
     return response($user, 200);
   }
 
-  public function store(UserStoreRequest $request)
+  public function store(AuthStoreRequest $request)
   {
     $password = Str::random(8);
 
