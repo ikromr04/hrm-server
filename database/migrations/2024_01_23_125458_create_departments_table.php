@@ -17,6 +17,7 @@ class CreateDepartmentsTable extends Migration
       $table->id();
       $table->string('name');
       $table->timestamps();
+      $table->nestedSet();
     });
   }
 
@@ -27,6 +28,8 @@ class CreateDepartmentsTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('departments');
+    Schema::table('departments', function (Blueprint $table) {
+      $table->dropNestedSet();
+    });
   }
 }
