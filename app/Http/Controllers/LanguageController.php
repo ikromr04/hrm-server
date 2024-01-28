@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LanguagesStoreRequest;
 use App\Http\Requests\LanguagesUpdateRequest;
 use App\Models\Language;
-use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {

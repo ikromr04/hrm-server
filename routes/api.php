@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
@@ -48,6 +49,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::post('/languages', [LanguageController::class, 'store']);
   Route::put('/languages/{id}', [LanguageController::class, 'update']);
   Route::delete('/languages/{id}', [LanguageController::class, 'delete']);
+
+  Route::get('/departments', [DepartmentController::class, 'index']);
+  Route::post('/departments', [DepartmentController::class, 'store']);
+  Route::put('/departments/{id}', [DepartmentController::class, 'update']);
+  Route::delete('/departments/{id}', [DepartmentController::class, 'delete']);
 
   Route::post('/educations', [EducationController::class, 'store']);
   Route::put('/educations/{id}', [EducationController::class, 'update']);
