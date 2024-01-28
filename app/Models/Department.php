@@ -9,4 +9,11 @@ use Kalnoy\Nestedset\NodeTrait;
 class Department extends Model
 {
   use HasFactory, NodeTrait;
+
+  protected $hidden = ['pivot'];
+
+  public function users()
+  {
+    return $this->belongsToMany(User::class);
+  }
 }

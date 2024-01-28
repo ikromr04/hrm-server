@@ -21,6 +21,7 @@ class EmployeeUpdateRequest extends FormRequest
 
     return array_merge($rules, [
       'patronymic' => 'nullable',
+      'departments' => 'nullable|array',
       'jobs' => 'nullable|array',
       'positions' => 'nullable|array',
       'languages' => 'nullable|array',
@@ -49,6 +50,7 @@ class EmployeeUpdateRequest extends FormRequest
       'login.unique' => 'Этот логин уже занят.',
       'started_work_at.required' => 'Поле \'начало работы\' обязательно для заполнения.',
       'started_work_at.date' => 'Поле \'начало работы\' не является допустимой датой.',
+      'departments.array' => 'Поле должен содержать массив должностей.',
       'jobs.array' => 'Поле должен содержать массив должностей.',
       'positions.array' => 'Поле должен содержать массив позиций.',
       'languages.array' => 'Поле должен содержать массив языков.',

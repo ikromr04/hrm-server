@@ -28,7 +28,7 @@ class UserController extends Controller
 
   public function store(EmployeeStoreRequest $request)
   {
-    
+
   }
 
   public function update(EmployeeUpdateRequest $request, $id)
@@ -43,6 +43,7 @@ class UserController extends Controller
 
     $request->has('jobs') && $user->jobs()->sync($request->jobs);
     $request->has('positions') && $user->positions()->sync($request->positions);
+    $request->has('departments') && $user->departments()->sync($request->departments);
     if ($request->has('languages')) {
       $languages = [];
       foreach ($request->input('languages') as $language) {

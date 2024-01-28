@@ -70,7 +70,7 @@ class User extends Authenticatable
 
   public function scopeWithDetails($query)
   {
-    return $query->orderBy('surname')->with(['jobs', 'positions', 'langs', 'details']);
+    return $query->orderBy('surname')->with(['jobs', 'positions', 'langs', 'details', 'departments']);
   }
 
   public function details()
@@ -119,5 +119,11 @@ class User extends Authenticatable
   {
     return $this->hasMany(Activity::class)
       ->orderBy('hired_at', 'desc');
+  }
+
+  public function departments()
+  {
+    return $this->belongsToMany(Department::class)
+      ->select('id', 'title');
   }
 }
