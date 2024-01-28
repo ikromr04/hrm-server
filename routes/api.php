@@ -35,8 +35,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/employees/{id}/activities', [UserController::class, 'activities']);
 
   Route::get('/jobs', [JobController::class, 'index']);
+  Route::post('/jobs', [JobController::class, 'store']);
+  Route::put('/jobs/{id}', [JobController::class, 'update']);
+  Route::delete('/jobs/{id}', [JobController::class, 'delete']);
 
   Route::get('/positions', [PositionController::class, 'index']);
+  Route::post('/positions', [PositionController::class, 'store']);
+  Route::put('/positions/{id}', [PositionController::class, 'update']);
+  Route::delete('/positions/{id}', [PositionController::class, 'delete']);
 
   Route::get('/languages', [LanguageController::class, 'index']);
 

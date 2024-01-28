@@ -11,14 +11,7 @@ class Position extends Model
   use HasFactory;
 
   protected $guarded = [];
-  protected $hidden = ['pivot'];
-
-  protected static function booted()
-  {
-    static::addGlobalScope('adapt-to-client', function (Builder $builder) {
-      $builder->select('id', 'title');
-    });
-  }
+  protected $hidden = ['pivot', 'created_at', 'updated_at'];
 
   public function users()
   {
