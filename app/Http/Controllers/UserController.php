@@ -9,6 +9,7 @@ use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\Activity;
 use App\Models\Detail;
 use App\Models\Education;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -28,7 +29,34 @@ class UserController extends Controller
 
   public function store(EmployeeStoreRequest $request)
   {
+    $user = new User();
+    $user->name = $request->input('name');
+    $user->surname = $request->input('surname');
+    $user->login = $request->input('login');
+    $user->password = bcrypt(Str::random(8));
+    $request->has('patronymic') && $user->patronymic = $request->input('patronymic');
+    $request->has('started_work_at') && $user->started_work_at = $request->input('started_work_at');
+    $user->save();
 
+    $request->has('jobs') && $user->jobs()->sync($request->jobs);
+    $request->has('positions') && $user->positions()->sync($request->positions);
+    $request->has('departments') && $user->departments()->sync($request->departments);
+
+    $detail = new Detail();
+    $detail->user_id = $user->id;
+    $request->has('details.birth_date') && $detail->birth_date = $request->input('details.birth_date');
+    $request->has('details.gender') && $detail->gender = $request->input('details.gender');
+    $request->has('details.nationality') && $detail->nationality = $request->input('details.nationality');
+    $request->has('details.citizenship') && $detail->citizenship = $request->input('details.citizenship');
+    $request->has('details.address') && $detail->address = $request->input('details.address');
+    $request->has('details.email') && $detail->email = $request->input('details.email');
+    $request->has('details.tel_1') && $detail->tel_1 = $request->input('details.tel_1');
+    $request->has('details.tel_2') && $detail->tel_2 = $request->input('details.tel_2');
+    $request->has('details.family_status') && $detail->family_status = $request->input('details.family_status');
+    $request->has('details.children') && $detail->children = $request->input('details.children');
+    $detail->save();
+
+    return response(User::withDetails()->find($user->id), 201);
   }
 
   public function update(EmployeeUpdateRequest $request, $id)

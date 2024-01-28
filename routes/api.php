@@ -25,9 +25,8 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::delete('/auth/login', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-  Route::post('/auth', [AuthController::class, 'store']);
-
   Route::get('/employees', [UserController::class, 'index']);
+  Route::post('/employees', [UserController::class, 'store']);
   Route::get('/employees/{id}', [UserController::class, 'show']);
   Route::put('/employees/{id}', [UserController::class, 'update']);
   Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);

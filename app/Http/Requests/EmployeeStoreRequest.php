@@ -13,17 +13,14 @@ class EmployeeStoreRequest extends FormRequest
 
   public function rules()
   {
-    $rules = [];
-    $this->has('name') && $rules = array_merge($rules, ['name' => 'required']);
-    $this->has('surname') && $rules = array_merge($rules, ['surname' => 'required']);
-    $this->has('login') && $rules = array_merge($rules, ['login' => 'required|unique:users,login']);
-    $this->has('started_work_at') && $rules = array_merge($rules, ['started_work_at' => 'required|date']);
 
-    return array_merge($rules, [
+    return [
       'name' => 'required',
       'surname' => 'required',
-      'login' => 'required',
+      'login' => 'required|unique:users,login',
       'patronymic' => 'nullable',
+      'started_work_at' => 'nullable|date',
+      'departments' => 'nullable|array',
       'jobs' => 'nullable|array',
       'positions' => 'nullable|array',
       'languages' => 'nullable|array',
@@ -40,7 +37,7 @@ class EmployeeStoreRequest extends FormRequest
       'details.tel_2' => 'nullable',
       'details.family_status' => 'nullable',
       'details.children' => 'nullable|array',
-    ]);
+    ];
   }
 
   public function messages()
@@ -50,8 +47,8 @@ class EmployeeStoreRequest extends FormRequest
       'surname.required' => 'Поле фамилия обязательно для заполнения.',
       'login.required' => 'Поле логин обязательно для заполнения.',
       'login.unique' => 'Этот логин уже занят.',
-      'started_work_at.required' => 'Поле \'начало работы\' обязательно для заполнения.',
       'started_work_at.date' => 'Поле \'начало работы\' не является допустимой датой.',
+      'departments.array' => 'Поле должен содержать массив должностей.',
       'jobs.array' => 'Поле должен содержать массив должностей.',
       'positions.array' => 'Поле должен содержать массив позиций.',
       'languages.array' => 'Поле должен содержать массив языков.',

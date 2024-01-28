@@ -42,24 +42,6 @@ class AuthController extends Controller
     return response($user, 200);
   }
 
-  public function store(AuthStoreRequest $request)
-  {
-    $password = Str::random(8);
-
-    User::create([
-      'name' => $request->input('name'),
-      'surname' => $request->input('surname'),
-      'login' => $request->input('login'),
-      'password' => bcrypt($password),
-      'started_work_at' => new DateTime(),
-    ]);
-
-    return response([
-      'login' => $request->login,
-      'password' => $password,
-    ], 201);
-  }
-
   public function logout()
   {
     if (!request()->user('sanctum')) {
