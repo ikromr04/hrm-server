@@ -45,6 +45,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::delete('/positions/{id}', [PositionController::class, 'delete']);
 
   Route::get('/languages', [LanguageController::class, 'index']);
+  Route::post('/languages', [LanguageController::class, 'store']);
+  Route::put('/languages/{id}', [LanguageController::class, 'update']);
+  Route::delete('/languages/{id}', [LanguageController::class, 'delete']);
 
   Route::post('/educations', [EducationController::class, 'store']);
   Route::put('/educations/{id}', [EducationController::class, 'update']);
