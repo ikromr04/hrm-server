@@ -16,6 +16,6 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-  <script type="module" src="{{ asset('js/index-Jw8ufOKR.js') }}"></script>
+  <script type="module" src="{{ asset('js/index-925Cx94c.js') }}"></script>
 </body>
 </html>
