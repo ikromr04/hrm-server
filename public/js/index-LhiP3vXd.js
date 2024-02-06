@@ -1405,6 +1405,7 @@ Error generating stack: `+a.message+`
   border-radius: 8px 8px 0 0;
   background-color: #f9f9f9;
   min-width: max-content;
+  z-index: 1;
 
   ${({stickyHeader:e})=>e&&Ae`
     position: sticky;
@@ -1414,6 +1415,7 @@ Error generating stack: `+a.message+`
   display: flex;
   flex-direction: column;
   min-width: max-content;
+  z-index: 0;
 `,jg=H("tr")`
   display: flex;
   align-items: center;
