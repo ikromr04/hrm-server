@@ -16,10 +16,10 @@ class Language extends Model
   protected static function booted()
   {
     static::addGlobalScope('order', function (Builder $builder) {
-      $builder->orderBy('title');
+      $builder->orderBy('name');
     });
   }
-  
+
   public function users()
   {
     return $this->belongsToMany(User::class);
