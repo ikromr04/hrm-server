@@ -82,6 +82,10 @@ class UserController extends Controller
 
     if ($request->has('details')) {
       $detail = Detail::where('user_id', $user->id)->first();
+      if (!$detail) {
+        $detail = new Detail();
+        $detail->user_id = $user->id;
+      }
       $request->has('details.birth_date') && $detail->birth_date = $request->input('details.birth_date');
       $request->has('details.gender') && $detail->gender = $request->input('details.gender');
       $request->has('details.nationality') && $detail->nationality = $request->input('details.nationality');
@@ -92,7 +96,7 @@ class UserController extends Controller
       $request->has('details.tel_2') && $detail->tel_2 = $request->input('details.tel_2');
       $request->has('details.family_status') && $detail->family_status = $request->input('details.family_status');
       $request->has('details.children') && $detail->children = $request->input('details.children');
-      $detail->isDirty() && $detail->update();
+      $detail->save();
     }
 
     return response(User::withDetails()->find($id), 200);
