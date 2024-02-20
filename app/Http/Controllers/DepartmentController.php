@@ -10,9 +10,16 @@ class DepartmentController extends Controller
 {
   public function index()
   {
-    $department = Department::get();
+    $departments = Department::get();
 
-    return response($department, 200);
+    return response($departments, 200);
+  }
+
+  public function tree()
+  {
+    $departments = Department::get()->toTree();
+
+    return response($departments, 200);
   }
 
   public function store(DepartmentsStoreRequest $request)
