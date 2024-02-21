@@ -17,7 +17,7 @@ class DepartmentController extends Controller
 
   public function tree()
   {
-    $departments = Department::get()->toTree();
+    $departments = Department::with('users')->defaultOrder()->get()->toTree();
 
     return response($departments, 200);
   }

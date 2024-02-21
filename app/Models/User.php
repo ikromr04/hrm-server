@@ -23,7 +23,7 @@ class User extends Authenticatable
       $builder->select(
         'id', 'name', 'surname', 'patronymic', 'login', 'password', 'avatar',
         'started_work_at as startedWorkAt'
-      );
+      )->with('jobs', 'positions');
     });
   }
 
@@ -70,7 +70,7 @@ class User extends Authenticatable
 
   public function scopeWithDetails($query)
   {
-    return $query->orderBy('surname')->with(['jobs', 'positions', 'langs', 'details', 'departments']);
+    return $query->orderBy('surname')->with(['details', 'departments']);
   }
 
   public function details()
@@ -124,6 +124,6 @@ class User extends Authenticatable
   public function departments()
   {
     return $this->belongsToMany(Department::class)
-      ->select('id', 'title');
+      ->withPivot('leader');
   }
 }

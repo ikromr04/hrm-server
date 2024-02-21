@@ -19,6 +19,7 @@ class CreateDepartmentUserTable extends Migration
       $table->bigInteger('user_id')->unsigned()->nullable();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       $table->unique(['department_id', 'user_id']);
+      $table->boolean('leader')->default(false);
     });
   }
 
