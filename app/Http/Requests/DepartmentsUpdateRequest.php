@@ -13,16 +13,17 @@ class DepartmentsUpdateRequest extends FormRequest
 
   public function rules()
   {
-    return [
-      'title' => 'required|unique:departments,title',
-    ];
+    $rules = [];
+    $this->has('title') && $rules = array_merge($rules, ['title' => 'required|unique:departments,title']);
+
+    return $rules;
   }
 
   public function messages()
   {
     return [
       'title.required' => 'Поле обязательно для заполнения.',
-      'title.unique' => 'Отдел с таким названием уже существует.',
+      'title.unique' => 'Отдел/департамент с таким названием уже существует.',
     ];
   }
 }

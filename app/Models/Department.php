@@ -4,27 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Department extends Model
 {
   use HasFactory, NodeTrait;
 
-  protected $hidden = ['pivot', 'users'];
-  protected $appends = ['employees'];
+  protected $guarded = [];
+  protected $hidden = ['pivot', 'users', '_lft', '_rgt', 'parent_id', 'created_at', 'updated_at'];
+  protected $appends = ['employees', 'left', 'right', 'parent'];
 
-  protected static function booted()
+  public function getLeftAttribute()
   {
-    static::addGlobalScope('order', function (Builder $builder) {
-      $builder->orderBy('title')->select(
-        'id',
-        'title',
-        '_lft as left',
-        '_rgt as right',
-        'parent_id as parent',
-      );
-    });
+    return $this->_lft;
+  }
+
+  public function getRightAttribute()
+  {
+    return $this->_rgt;
+  }
+
+  public function getParentAttribute()
+  {
+    return $this->parent_id;
   }
 
   public function getEmployeesAttribute()

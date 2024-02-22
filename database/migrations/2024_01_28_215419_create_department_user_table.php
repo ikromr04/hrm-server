@@ -21,7 +21,7 @@ class CreateDepartmentUserTable extends Migration
       $table->unique(['department_id', 'user_id']);
       $table->boolean('leader')->default(false);
     });
-  }
+}
 
   /**
    * Reverse the migrations.

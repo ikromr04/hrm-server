@@ -10,14 +10,15 @@ class DepartmentController extends Controller
 {
   public function index()
   {
-    $departments = Department::get();
+    $departments = Department::orderBy('title', 'asc')
+      ->get();
 
     return response($departments, 200);
   }
 
   public function tree()
   {
-    $departments = Department::with('users')->defaultOrder()->get()->toTree();
+    $departments = Department::get()->toTree();
 
     return response($departments, 200);
   }
@@ -34,15 +35,30 @@ class DepartmentController extends Controller
   public function update(DepartmentsUpdateRequest $request, $id)
   {
     $department = Department::find($id);
-    $department->title = $request->input('title');
+    if ($request->has('parent_id')) {
+      $parent = Department::find($request->input('parent_id'));
+      $parent->appendNode($department);
+    }
+    $employees = [];
+    if ($request->has('employees')) {
+      $employees = $request->input('employees');
+    }
+    if ($request->has('leaders')) {
+      foreach ($request->input('leaders') as $leader) {
+        $employees[$leader] = ['leader' => true];
+      }
+    }
+    $department->users()->sync($employees);
+    $request->has('title') && $department->title = $request->input('title');
     $department->update();
 
-    return response($department, 200);
+    return response(Department::get()->toTree(), 200);
   }
 
   public function delete($id)
   {
-    Department::find($id)->delete();
+    $department = Department::find($id);
+    $department->delete();
 
     return response()->noContent();
   }
