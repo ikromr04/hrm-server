@@ -27,17 +27,46 @@ class DepartmentController extends Controller
   {
     $department = new Department();
     $department->title = $request->input('title');
-    $department->save();
 
-    return response($department, 201);
+    if ($request->has('parent_id')) {
+      if ($request->input('parent_id')) {
+        $parent = Department::find($request->input('parent_id'));
+        $parent->appendNode($department);
+      } else {
+        $department->parent_id = null;
+      }
+    }
+    $department->save();
+    $employees = [];
+    if ($request->has('employees')) {
+      $employees = $request->input('employees');
+    }
+    if ($request->has('leaders')) {
+      foreach ($request->input('leaders') as $leader) {
+        $employees[$leader] = ['leader' => true];
+      }
+    }
+    if ($request->has('children')) {
+      foreach ($request->input('children') as $childId) {
+        $child = Department::find($childId);
+        $department->appendNode($child);
+      }
+    }
+    $department->users()->sync($employees);
+
+    return response(Department::get()->toTree(), 201);
   }
 
   public function update(DepartmentsUpdateRequest $request, $id)
   {
     $department = Department::find($id);
     if ($request->has('parent_id')) {
-      $parent = Department::find($request->input('parent_id'));
-      $parent->appendNode($department);
+      if ($request->input('parent_id')) {
+        $parent = Department::find($request->input('parent_id'));
+        $parent->appendNode($department);
+      } else {
+        $department->parent_id = null;
+      }
     }
     $employees = [];
     if ($request->has('employees')) {
@@ -46,6 +75,12 @@ class DepartmentController extends Controller
     if ($request->has('leaders')) {
       foreach ($request->input('leaders') as $leader) {
         $employees[$leader] = ['leader' => true];
+      }
+    }
+    if ($request->has('children')) {
+      foreach ($request->input('children') as $childId) {
+        $child = Department::find($childId);
+        $department->appendNode($child);
       }
     }
     $department->users()->sync($employees);
