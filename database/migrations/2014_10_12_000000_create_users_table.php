@@ -21,7 +21,8 @@ class CreateUsersTable extends Migration
       $table->string('patronymic')->nullable();
       $table->string('login')->unique();
       $table->string('password');
-      $table->string('avatar')->nullable();
+      $table->string('avatar')->default('');
+      $table->string('avatar_thumb')->default('');
       $table->timestamp('started_work_at')->default(DB::raw('CURRENT_TIMESTAMP'));
       $table->rememberToken();
       $table->timestamps();

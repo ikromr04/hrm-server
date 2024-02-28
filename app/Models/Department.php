@@ -41,6 +41,7 @@ class Department extends Model
         'patronymic' => $value->patronymic,
         'login' => $value->login,
         'avatar' => $value->avatar,
+        'avatarThumb' => $value->avatarThumb,
         'startedWorkAt' => $value->startedWorkAt,
         'previous' => $value->previous,
         'next' => $value->next,

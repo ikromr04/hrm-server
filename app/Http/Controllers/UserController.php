@@ -10,6 +10,7 @@ use App\Models\Activity;
 use App\Models\Detail;
 use App\Models\Education;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -104,31 +105,54 @@ class UserController extends Controller
 
   public function updateAvatar($id)
   {
-    $avatar = DB::table('users')->find($id)->avatar;
+    $user = DB::table('users')->find($id);
 
-    if ($avatar && file_exists(public_path($avatar))) {
-      unlink(public_path($avatar));
+    if ($user->avatar && file_exists(public_path($user->avatar))) {
+      unlink(public_path($user->avatar));
+    }
+    if ($user->avatar_thumb && file_exists(public_path($user->avatar_thumb))) {
+      unlink(public_path($user->avatar_thumb));
     }
 
-    $file = request()->file('avatar');
-    $fileName = uniqid() . '.' . $file->extension();
-    $file->move(public_path('/uploads/img/employees'), $fileName);
-    $avatar = '/uploads/img/employees/' . $fileName;
+    $avatar = request()->file('avatar');
+    $avatarThumb = Image::make($avatar);
+    $avatarThumb->resize(144, 144, function ($constraint) {
+      $constraint->aspectRatio();
+    });
+    $avatarName = uniqid() . '.' . $avatar->extension();
+    $avatarPath = 'uploads/img/employees/' . $avatarName;
+    $avatarThumbPath = 'uploads/img/employees/thumbs/' . uniqid() . '.' . $avatar->extension();
+    $avatarThumb->save($avatarThumbPath);
+    $avatar->move(public_path('/uploads/img/employees'), $avatarName);
 
-    DB::table('users')->where('id', $id)->update(['avatar' => $avatar]);
+    DB::table('users')->where('id', $id)->update([
+      'avatar' => $avatarPath,
+      'avatar_thumb' => $avatarThumbPath,
+    ]);
 
-    return response(asset($avatar), 200);
+    return response([
+      'avatar' => asset($avatarPath),
+      'avatarThumb' => asset($avatarThumbPath),
+    ], 200);
   }
 
   public function deleteAvatar($id)
   {
-    $avatar = DB::table('users')->find($id)->avatar;
+    $user = DB::table('users')->find($id);
 
-    if ($avatar && file_exists(public_path($avatar))) {
-      unlink(public_path($avatar));
+    if ($user->avatar && file_exists(public_path($user->avatar))) {
+      unlink(public_path($user->avatar));
+      $user->avatar = '';
+    }
+    if ($user->avatar_thumb && file_exists(public_path($user->avatar_thumb))) {
+      unlink(public_path($user->avatar_thumb));
+      $user->avatar_thumb = '';
     }
 
-    DB::table('users')->where('id', $id)->update(['avatar' => null ]);
+    DB::table('users')->where('id', $id)->update([
+      'avatar' => '',
+      'avatar_thumb' => '',
+    ]);
 
     return response('', 200);
   }
