@@ -252,7 +252,7 @@ class UserController extends Controller
       'avatar_thumb' => '',
     ]);
 
-    return response('', 200);
+    return response()->noContent();
   }
 
   public function educations($id)
