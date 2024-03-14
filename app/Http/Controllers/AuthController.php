@@ -15,12 +15,56 @@ class AuthController extends Controller
       return response(['message' => 'Вы не авторизованы.'], 401);
     }
 
-    return response(request()->user('sanctum'), 200);
+    $user = User::select(
+      'id',
+      'role_id',
+      'name',
+      'surname',
+      'login',
+      'password',
+      'avatar_thumb as avatarThumb',
+    )
+      ->with([
+        'role' => function ($query) {
+          $query->select(
+            'id',
+            'name',
+            'display_name as displayName'
+          );
+        },
+      ])
+      ->find(request()->user('sanctum')->id);
+
+    $user->avatarThumb && $user->avatarThumb = asset($user->avatarThumb);
+
+    unset($user->role_id);
+    unset($user->password);
+
+    return response($user, 200);
   }
 
   public function login(LoginRequest $request)
   {
-    $user = User::where('login', $request->login)->first();
+    $user = User::select(
+      'id',
+      'role_id',
+      'name',
+      'surname',
+      'login',
+      'password',
+      'avatar_thumb as avatarThumb',
+    )
+      ->with([
+        'role' => function ($query) {
+          $query->select(
+            'id',
+            'name',
+            'display_name as displayName'
+          );
+        },
+      ])
+      ->where('login', $request->login)
+      ->first();
 
     if (!$user) {
       throw ValidationException::withMessages([
@@ -35,6 +79,11 @@ class AuthController extends Controller
     }
 
     $user->token = $user->createToken('access_token', [$user->role->name])->plainTextToken;
+
+    $user->avatarThumb && $user->avatarThumb = asset($user->avatarThumb);
+
+    unset($user->role_id);
+    unset($user->password);
 
     return response($user, 200);
   }

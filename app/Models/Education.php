@@ -12,15 +12,15 @@ class Education extends Model
 
   protected $guarded = [];
 
-  protected static function booted()
-  {
-    static::addGlobalScope('adapt-to-client', function (Builder $builder) {
-      $builder->select(
-        'id', 'user_id as userId', 'started_at as startedAt', 'graduated_at as graduatedAt',
-        'institution', 'faculty', 'form', 'speciality'
-      );
-    });
-  }
+  // protected static function booted()
+  // {
+  //   static::addGlobalScope('adapt-to-client', function (Builder $builder) {
+  //     $builder->select(
+  //       'id', 'user_id as userId', 'started_at as startedAt', 'graduated_at as graduatedAt',
+  //       'institution', 'faculty', 'form', 'speciality'
+  //     );
+  //   });
+  // }
 
   public function user()
   {

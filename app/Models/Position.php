@@ -11,14 +11,14 @@ class Position extends Model
   use HasFactory;
 
   protected $guarded = [];
-  protected $hidden = ['pivot', 'created_at', 'updated_at'];
+  protected $hidden = ['pivot'];
 
-  protected static function booted()
-  {
-    static::addGlobalScope('order', function (Builder $builder) {
-      $builder->orderBy('title');
-    });
-  }
+  // protected static function booted()
+  // {
+  //   static::addGlobalScope('order', function (Builder $builder) {
+  //     $builder->orderBy('title');
+  //   });
+  // }
 
   public function users()
   {

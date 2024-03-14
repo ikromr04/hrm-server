@@ -12,15 +12,15 @@ class Activity extends Model
 
   protected $guarded = [];
 
-  protected static function booted()
-  {
-    static::addGlobalScope('adapt-to-client', function (Builder $builder) {
-      $builder->select(
-        'id', 'user_id as userId', 'hired_at as hiredAt', 'dismissed_at as dismissedAt',
-        'organization', 'job'
-      );
-    });
-  }
+  // protected static function booted()
+  // {
+  //   static::addGlobalScope('adapt-to-client', function (Builder $builder) {
+  //     $builder->select(
+  //       'id', 'user_id as userId', 'hired_at as hiredAt', 'dismissed_at as dismissedAt',
+  //       'organization', 'job'
+  //     );
+  //   });
+  // }
 
   public function user()
   {

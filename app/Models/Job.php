@@ -11,14 +11,14 @@ class Job extends Model
   use HasFactory;
 
   protected $guarded = [];
-  protected $hidden = ['pivot', 'updated_at', 'created_at'];
+  protected $hidden = ['pivot'];
 
-  protected static function booted()
-  {
-    static::addGlobalScope('order', function (Builder $builder) {
-      $builder->orderBy('title');
-    });
-  }
+  // protected static function booted()
+  // {
+  //   static::addGlobalScope('order', function (Builder $builder) {
+  //     $builder->orderBy('title');
+  //   });
+  // }
 
   public function users()
   {
