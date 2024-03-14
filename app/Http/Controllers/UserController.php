@@ -257,14 +257,36 @@ class UserController extends Controller
 
   public function educations($id)
   {
-    $educations = Education::where('user_id', $id)->orderBy('started_at', 'desc')->get();
+    $educations = Education::select(
+      'id',
+      'user_id as userId',
+      'started_at as startedAt',
+      'graduated_at as graduatedAt',
+      'institution',
+      'faculty',
+      'form',
+      'speciality'
+    )
+      ->where('user_id', $id)
+      ->orderBy('started_at', 'desc')
+      ->get();
 
     return response($educations, 200);
   }
 
   public function activities($id)
   {
-    $activities = Activity::where('user_id', $id)->orderBy('hired_at', 'desc')->get();
+    $activities = Activity::select(
+      'id',
+      'user_id as userId',
+      'organization',
+      'job',
+      'hired_at as hiredAt',
+      'dismissed_at as dismissedAt'
+    )
+      ->where('user_id', $id)
+      ->orderBy('hired_at', 'desc')
+      ->get();
 
     return response($activities, 200);
   }
