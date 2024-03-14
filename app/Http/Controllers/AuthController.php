@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AuthStoreRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use DateTime;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -31,13 +28,13 @@ class AuthController extends Controller
       ]);
     }
 
-    if (!Hash::check($request->password, $user->password)) {
+    if ($request->password != Crypt::decryptString($user->password)) {
       throw ValidationException::withMessages([
         'password' => ['Неверный пароль.'],
       ]);
     }
 
-    $user->token = $user->createToken('access_token')->plainTextToken;
+    $user->token = $user->createToken('access_token', [$user->role->name])->plainTextToken;
 
     return response($user, 200);
   }

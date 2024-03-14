@@ -20,46 +20,54 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::get('/auth/login', [AuthController::class, 'check']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::delete('/auth/login', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/employees', [UserController::class, 'index']);
-  Route::post('/employees', [UserController::class, 'store']);
   Route::get('/employees/{id}', [UserController::class, 'show']);
-  Route::put('/employees/{id}', [UserController::class, 'update']);
-  Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
-  Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
   Route::get('/employees/{id}/educations', [UserController::class, 'educations']);
   Route::get('/employees/{id}/activities', [UserController::class, 'activities']);
 
   Route::get('/jobs', [JobController::class, 'index']);
-  Route::post('/jobs', [JobController::class, 'store']);
-  Route::put('/jobs/{id}', [JobController::class, 'update']);
-  Route::delete('/jobs/{id}', [JobController::class, 'delete']);
 
   Route::get('/positions', [PositionController::class, 'index']);
-  Route::post('/positions', [PositionController::class, 'store']);
-  Route::put('/positions/{id}', [PositionController::class, 'update']);
-  Route::delete('/positions/{id}', [PositionController::class, 'delete']);
 
   Route::get('/languages', [LanguageController::class, 'index']);
-  Route::post('/languages', [LanguageController::class, 'store']);
-  Route::put('/languages/{id}', [LanguageController::class, 'update']);
-  Route::delete('/languages/{id}', [LanguageController::class, 'delete']);
 
   Route::get('/departments', [DepartmentController::class, 'index']);
-  Route::post('/departments', [DepartmentController::class, 'store']);
   Route::get('/departments/tree', [DepartmentController::class, 'tree']);
-  Route::put('/departments/{id}', [DepartmentController::class, 'update']);
-  Route::delete('/departments/{id}', [DepartmentController::class, 'delete']);
 
-  Route::post('/educations', [EducationController::class, 'store']);
-  Route::put('/educations/{id}', [EducationController::class, 'update']);
-  Route::delete('/educations/{id}', [EducationController::class, 'delete']);
+  Route::group(['middleware' => ['abilities:admin']], function () {
+    Route::post('/employees', [UserController::class, 'store']);
+    Route::put('/employees/{id}', [UserController::class, 'update']);
+    Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
+    Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);
 
-  Route::post('/activities', [ActivityController::class, 'store']);
-  Route::put('/activities/{id}', [ActivityController::class, 'update']);
-  Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
+    Route::post('/jobs', [JobController::class, 'store']);
+    Route::put('/jobs/{id}', [JobController::class, 'update']);
+    Route::delete('/jobs/{id}', [JobController::class, 'delete']);
+
+    Route::post('/positions', [PositionController::class, 'store']);
+    Route::put('/positions/{id}', [PositionController::class, 'update']);
+    Route::delete('/positions/{id}', [PositionController::class, 'delete']);
+
+    Route::post('/languages', [LanguageController::class, 'store']);
+    Route::put('/languages/{id}', [LanguageController::class, 'update']);
+    Route::delete('/languages/{id}', [LanguageController::class, 'delete']);
+
+    Route::post('/departments', [DepartmentController::class, 'store']);
+    Route::put('/departments/{id}', [DepartmentController::class, 'update']);
+    Route::delete('/departments/{id}', [DepartmentController::class, 'delete']);
+
+    Route::post('/educations', [EducationController::class, 'store']);
+    Route::put('/educations/{id}', [EducationController::class, 'update']);
+    Route::delete('/educations/{id}', [EducationController::class, 'delete']);
+
+    Route::post('/activities', [ActivityController::class, 'store']);
+    Route::put('/activities/{id}', [ActivityController::class, 'update']);
+    Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
+  });
 });

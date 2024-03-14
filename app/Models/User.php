@@ -14,14 +14,14 @@ class User extends Authenticatable
 
   protected $guarded = [];
   protected $casts = ['email_verified_at' => 'datetime'];
-  protected $hidden = ['password', 'pivot', 'langs', 'avatar_thumb'];
+  protected $hidden = ['password', 'role_id', 'pivot', 'langs', 'avatar_thumb'];
   protected $appends = ['previous', 'next', 'languages', 'avatarThumb'];
 
   protected static function booted()
   {
     static::addGlobalScope('adapt-to-client', function (Builder $builder) {
       $builder->select(
-        'id', 'name', 'surname', 'patronymic', 'login', 'password', 'avatar',
+        'id', 'role_id', 'name', 'surname', 'patronymic', 'login', 'password', 'avatar',
         'avatar_thumb', 'started_work_at as startedWorkAt'
       )->with('jobs', 'positions');
     });
@@ -133,5 +133,10 @@ class User extends Authenticatable
   {
     return $this->belongsToMany(Department::class)
       ->withPivot('leader');
+  }
+
+  public function role()
+  {
+    return $this->belongsTo(Role::class);
   }
 }
