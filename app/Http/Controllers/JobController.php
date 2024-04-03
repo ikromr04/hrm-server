@@ -10,18 +10,26 @@ class JobController extends Controller
 {
   public function index()
   {
-    $jobs = Job::get();
+    $jobs = Job::select(
+      'id',
+      'title',
+    )
+      ->orderBy('title')
+      ->get();
 
     return response($jobs, 200);
   }
 
   public function store(JobsStoreRequest $request)
   {
-    $job = new Job();
-    $job->title = $request->input('title');
-    $job->save();
+    $job = Job::create([
+      'title' => $request->input('title'),
+    ]);
 
-    return response($job, 201);
+    return response([
+      'id' => $job->id,
+      'title' => $job->title,
+    ], 201);
   }
 
   public function update(JobsUpdateRequest $request, $id)
@@ -30,7 +38,10 @@ class JobController extends Controller
     $job->title = $request->input('title');
     $job->update();
 
-    return response($job, 200);
+    return response([
+      'id' => $job->id,
+      'title' => $job->title,
+    ], 200);
   }
 
   public function delete($id)

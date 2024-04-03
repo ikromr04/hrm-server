@@ -9,11 +9,9 @@ use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\Activity;
 use App\Models\Detail;
 use App\Models\Education;
-use DateTime;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Date;
 
 class UserController extends Controller
 {
@@ -91,7 +89,9 @@ class UserController extends Controller
       }
 
       unset($user->role_id);
-      unset($user->details->user_id);
+      if ($user->details) {
+        unset($user->details->user_id);
+      }
     }
 
     return response($users, 200);
@@ -380,4 +380,3 @@ class UserController extends Controller
     return $user;
   }
 }
-

@@ -21,12 +21,14 @@ class User extends Authenticatable
 
   public function jobs()
   {
-    return $this->belongsToMany(Job::class);
+    return $this->belongsToMany(Job::class)
+      ->select('id', 'title');
   }
 
   public function positions()
   {
-    return $this->belongsToMany(Position::class);
+    return $this->belongsToMany(Position::class)
+      ->select('id', 'title');
   }
 
   public function languages()

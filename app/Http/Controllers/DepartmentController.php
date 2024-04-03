@@ -5,20 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DepartmentsStoreRequest;
 use App\Http\Requests\DepartmentsUpdateRequest;
 use App\Models\Department;
+use stdClass;
 
 class DepartmentController extends Controller
 {
   public function index()
   {
-    $departments = Department::orderBy('title', 'asc')
+    $departments = Department::select(
+      'id',
+      'title',
+    )
+      ->orderBy('title')
       ->get();
-
-    return response($departments, 200);
-  }
-
-  public function tree()
-  {
-    $departments = Department::get()->toTree();
 
     return response($departments, 200);
   }
@@ -96,5 +94,67 @@ class DepartmentController extends Controller
     $department->delete();
 
     return response()->noContent();
+  }
+
+  public function tree()
+  {
+    $tree = Department::get()
+      ->toTree();
+
+    // $departments = DepartmentController::adaptDepartmentsTree($departments);
+
+    return response(DepartmentController::adaptTreeToClient($tree), 200);
+  }
+
+  public static function adaptTreeToClient($tree)
+  {
+    $clientTree = [];
+
+    foreach ($tree as $department) {
+      $branch = new stdClass();
+      $branch->id = $department->id;
+      $branch->title = $department->title;
+      $branch->left = $department->_lft;
+      $branch->right = $department->_rgt;
+      $branch->parent = $department->parent_id;
+      $branch->children = DepartmentController::adaptTreeToClient($department->children);
+
+      $employees = [];
+      foreach ($department->users as $key => $value) {
+        $employees[$key] = [
+          'id' => $value->id,
+          'name' => $value->name,
+          'surname' => $value->surname,
+          'patronymic' => $value->patronymic,
+          'login' => $value->login,
+          'avatar' => $value->avatar ? asset($value->avatar) : '',
+          'avatarThumb' => $value->avatar_thumb ? asset($value->avatar_thumb) : '',
+          'startedWorkAt' => $value->started_work_at,
+          'languages' => DepartmentController::adaptLanguagesToClient($value->languages),
+          'jobs' => $value->jobs,
+          'positions' => $value->positions,
+          'leader' => $value->pivot->leader,
+        ];
+      }
+      $branch->employees = $employees;
+
+      array_push($clientTree, $branch);
+    }
+
+    return $clientTree;
+  }
+
+  public static function adaptLanguagesToClient($languages)
+  {
+    $clientLanguages = [];
+    foreach ($languages as $key => $language) {
+      $clientLanguages[$key] = [
+        'id' => $language->id,
+        'name' => $language->name,
+        'level' => $language->pivot->level,
+      ];
+    }
+
+    return $clientLanguages;
   }
 }

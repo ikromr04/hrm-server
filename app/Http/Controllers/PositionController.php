@@ -5,24 +5,31 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PositionsStoreRequest;
 use App\Http\Requests\PositionsUpdateRequest;
 use App\Models\Position;
-use Illuminate\Http\Request;
 
 class PositionController extends Controller
 {
   public function index()
   {
-    $positions = Position::get();
+    $positions = Position::select(
+      'id',
+      'title',
+    )
+      ->orderBy('title')
+      ->get();
 
     return response($positions, 200);
   }
 
   public function store(PositionsStoreRequest $request)
   {
-    $position = new Position();
-    $position->title = $request->input('title');
-    $position->save();
+    $position = Position::create([
+      'title' => $request->input('title'),
+    ]);
 
-    return response($position, 201);
+    return response([
+      'id' => $position->id,
+      'title' => $position->title,
+    ], 201);
   }
 
   public function update(PositionsUpdateRequest $request, $id)
@@ -31,7 +38,10 @@ class PositionController extends Controller
     $position->title = $request->input('title');
     $position->update();
 
-    return response($position, 200);
+    return response([
+      'id' => $position->id,
+      'title' => $position->title,
+    ], 200);
   }
 
   public function delete($id)

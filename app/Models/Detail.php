@@ -10,7 +10,6 @@ class Detail extends Model
   use HasFactory;
 
   protected $guarded = [];
-  // protected $hidden = ['user_id'];
   protected $casts = ['children' => 'array'];
 
   public function user()
