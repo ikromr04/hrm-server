@@ -23,12 +23,17 @@ class ActivityController extends Controller
 
   public function update(ActivitiesUpdateRequest $request, $id)
   {
-    $activity = Activity::withoutGlobalScopes()->find($id);
-    $request->has('organization') && $activity->organization = $request->input('organization');
-    $request->has('job') && $activity->job = $request->input('job');
-    $request->has('hired_at') && $activity->hired_at = $request->input('hired_at');
-    $request->has('dismissed_at') && $activity->dismissed_at = $request->input('dismissed_at');
-    $activity->isDirty() && $activity->update();
+    $activity = Activity::find($id);
+    $request->has('organization')
+      && $activity->organization = $request->input('organization');
+    $request->has('job')
+      && $activity->job = $request->input('job');
+    $request->has('hired_at')
+      && $activity->hired_at = $request->input('hired_at');
+    $request->has('dismissed_at')
+      && $activity->dismissed_at = $request->input('dismissed_at');
+    $activity->isDirty()
+      && $activity->update();
 
     return response(Activity::find($id), 200);
   }
