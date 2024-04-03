@@ -101,8 +101,6 @@ class DepartmentController extends Controller
     $tree = Department::get()
       ->toTree();
 
-    // $departments = DepartmentController::adaptDepartmentsTree($departments);
-
     return response(DepartmentController::adaptTreeToClient($tree), 200);
   }
 
