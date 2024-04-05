@@ -291,6 +291,21 @@ class UserController extends Controller
     return response($activities, 200);
   }
 
+  public function export()
+  {
+    $user = User::select(
+      'id',
+      'name',
+      'surname',
+      'patronymic',
+      'login',
+      'avatar',
+      'avatar_thumb as avatarThumb',
+      'started_work_at as startedWorkAt',
+      'role_id',
+    );
+  }
+
   public static function getClientUser($id)
   {
     $user = User::select(
