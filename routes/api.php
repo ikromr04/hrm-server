@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
   Route::group(['middleware' => ['abilities:admin']], function () {
     Route::post('/employees', [UserController::class, 'store']);
+    Route::post('/employees/export', [UserController::class, 'export']);
     Route::put('/employees/{id}', [UserController::class, 'update']);
     Route::put('/employees/{id}/avatar', [UserController::class, 'updateAvatar']);
     Route::delete('/employees/{id}/avatar', [UserController::class, 'deleteAvatar']);

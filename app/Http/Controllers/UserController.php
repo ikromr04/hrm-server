@@ -293,17 +293,73 @@ class UserController extends Controller
 
   public function export()
   {
-    $user = User::select(
-      'id',
-      'name',
-      'surname',
-      'patronymic',
-      'login',
-      'avatar',
-      'avatar_thumb as avatarThumb',
-      'started_work_at as startedWorkAt',
-      'role_id',
-    );
+    $users = User::orderBy('surname')
+      ->select(
+        'id',
+        'name',
+        'surname',
+        'patronymic',
+        'login',
+        'password',
+        'role_id',
+      )
+      ->with([
+        'details' => function ($query) {
+          $query->select(
+            'user_id',
+            'birth_date as birthDate',
+            'gender',
+            'nationality',
+            'citizenship',
+            'address',
+            'email',
+            'tel_1 as tel1',
+            'tel_2 as tel2',
+            'family_status as familyStatus',
+            'children',
+          );
+        },
+        'departments' => function ($query) {
+          $query->select(
+            'id',
+            'title',
+          );
+        },
+        'jobs' => function ($query) {
+          $query->select(
+            'id',
+            'title',
+          );
+        },
+        'positions' => function ($query) {
+          $query->select(
+            'id',
+            'title',
+          );
+        },
+        'languages' => function ($query) {
+          $query->select(
+            'id',
+            'name',
+          );
+        },
+      ])
+      ->get();
+
+    foreach ($users as $user) {
+      $user->password = Crypt::decryptString($user->password);
+
+      foreach ($user->languages as $language) {
+        $language->level = $language->pivot->level;
+        unset($language->pivot);
+      }
+
+      if ($user->details) {
+        unset($user->details->user_id);
+      }
+    }
+
+    return response($users, 200);
   }
 
   public static function getClientUser($id)
