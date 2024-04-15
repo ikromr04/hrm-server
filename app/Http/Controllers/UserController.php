@@ -301,7 +301,6 @@ class UserController extends Controller
         'patronymic',
         'login',
         'password',
-        'role_id',
       )
       ->with([
         'details' => function ($query) {
