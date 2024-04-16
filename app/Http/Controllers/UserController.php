@@ -9,6 +9,7 @@ use App\Http\Requests\EmployeeUpdateRequest;
 use App\Models\Activity;
 use App\Models\Detail;
 use App\Models\Education;
+use App\Models\Equipment;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Crypt;
@@ -359,6 +360,15 @@ class UserController extends Controller
     }
 
     return response($users, 200);
+  }
+
+  public function equipments($id)
+  {
+    $equipments = Equipment::where('user_id', $id)
+      ->select('id', 'title')
+      ->get();
+
+    return response($equipments, 200);
   }
 
   public static function getClientUser($id)

@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PositionController;
@@ -30,6 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
   Route::get('/employees/{id}', [UserController::class, 'show']);
   Route::get('/employees/{id}/educations', [UserController::class, 'educations']);
   Route::get('/employees/{id}/activities', [UserController::class, 'activities']);
+  Route::get('/employees/{id}/equipments', [UserController::class, 'equipments']);
 
   Route::get('/jobs', [JobController::class, 'index']);
 
@@ -70,5 +72,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/activities', [ActivityController::class, 'store']);
     Route::put('/activities/{id}', [ActivityController::class, 'update']);
     Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
+
+    Route::post('/equipments', [EquipmentController::class, 'store']);
+    Route::put('/equipments/{id}', [EquipmentController::class, 'update']);
+    Route::delete('/equipments/{id}', [EquipmentController::class, 'delete']);
   });
 });
