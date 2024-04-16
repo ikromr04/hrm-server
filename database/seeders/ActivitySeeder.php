@@ -151,7 +151,16 @@ class ActivitySeeder extends Seeder
       array('id' => '135', 'user_id' => '63', 'organization' => 'TaxiMaxim, г. Душанбе', 'job' => 'Оператор', 'hired_at' => '2021-05-03 00:00:00', 'dismissed_at' => '2021-09-13 00:00:00', 'created_at' => '2024-03-14 05:59:54', 'updated_at' => '2024-03-14 05:59:54'),
       array('id' => '136', 'user_id' => '63', 'organization' => 'Пункт выдачи Wildberris,РФ, г. Подольск', 'job' => 'Сотрудник', 'hired_at' => '2022-07-01 00:00:00', 'dismissed_at' => '2022-10-27 00:00:00', 'created_at' => '2024-03-14 06:01:02', 'updated_at' => '2024-03-14 06:01:02'),
       array('id' => '137', 'user_id' => '35', 'organization' => 'State Television Institution "Varzish"', 'job' => 'HR', 'hired_at' => '2017-10-11 00:00:00', 'dismissed_at' => '2019-05-03 00:00:00', 'created_at' => '2024-03-18 05:11:56', 'updated_at' => '2024-03-18 05:11:56'),
-      array('id' => '138', 'user_id' => '35', 'organization' => 'Public Organization "Durakhshon"', 'job' => 'Бухгалтер', 'hired_at' => '2019-05-20 00:00:00', 'dismissed_at' => '2022-06-01 00:00:00', 'created_at' => '2024-03-18 05:27:33', 'updated_at' => '2024-03-18 05:28:03')
+      array(
+        'id' => '138',
+        'user_id' => '35',
+        'organization' => 'Public Organization "Durakhshon"',
+        'job' => 'Бухгалтер',
+        'hired_at' => '2019-05-20 00:00:00',
+        'dismissed_at' => '2022-06-01 00:00:00',
+        'created_at' => '2024-03-18 05:27:33',
+        'updated_at' => '2024-03-18 05:28:03'
+      )
     );
 
     foreach ($activities as $activity) {
