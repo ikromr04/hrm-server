@@ -17,7 +17,7 @@ class CreateEquipmentTable extends Migration
       $table->id();
       $table->integer('user_id');
       $table->string('title');
-      $table->string('info')->default('');
+      $table->string('info')->nullable();
       $table->timestamps();
     });
   }

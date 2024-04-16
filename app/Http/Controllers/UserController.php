@@ -365,7 +365,7 @@ class UserController extends Controller
   public function equipments($id)
   {
     $equipments = Equipment::where('user_id', $id)
-      ->select('id', 'title')
+      ->select('id', 'user_id', 'title', 'info')
       ->get();
 
     return response($equipments, 200);

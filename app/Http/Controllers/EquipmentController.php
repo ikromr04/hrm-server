@@ -19,6 +19,7 @@ class EquipmentController extends Controller
 
     return response([
       'id' => $equipment->id,
+      'user_id' => $equipment->user_id,
       'title' => $equipment->title,
       'info' => $equipment->info,
     ], 200);
@@ -26,11 +27,13 @@ class EquipmentController extends Controller
 
   public function update(EquipmentsUpdateRequest $request, $id)
   {
-    $equipment = Equipment::select('id', 'title', 'info')->find($id);
+    $equipment = Equipment::select('id', 'user_id', 'title', 'info')->find($id);
     $request->has('title')
       && $equipment->title = $request->input('title');
     $request->has('info')
       && $equipment->info = $request->input('info');
+    $equipment->isDirty()
+      && $equipment->update();
 
     return response($equipment, 200);
   }
