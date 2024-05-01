@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/activities/{id}', [ActivityController::class, 'update']);
     Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
 
+    Route::get('/equipments', [EquipmentController::class, 'get']);
     Route::post('/equipments', [EquipmentController::class, 'store']);
     Route::put('/equipments/{id}', [EquipmentController::class, 'update']);
     Route::delete('/equipments/{id}', [EquipmentController::class, 'delete']);

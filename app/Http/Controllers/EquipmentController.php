@@ -5,10 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EquipmentsStoreRequest;
 use App\Http\Requests\EquipmentsUpdateRequest;
 use App\Models\Equipment;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
 {
+  public function get()
+  {
+    $employeesEquipments = User::select(
+      'id',
+      'name',
+      'surname',
+      'patronymic',
+      'avatar_thumb as avatarThumb',
+    )->with([
+      'equipments' => function ($query) {
+        $query->select(
+          'id',
+          'user_id',
+          'title',
+          'info'
+        );
+      },
+    ])->get();
+
+    foreach ($employeesEquipments as $employeesEquipment) {
+      $employeesEquipment->avatarThumb = asset($employeesEquipment->avatarThumb);
+    }
+
+    return response($employeesEquipments, 200);
+  }
+
   public function store(EquipmentsStoreRequest $request)
   {
     $equipment = Equipment::create([
