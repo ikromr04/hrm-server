@@ -80,5 +80,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/equipments/{id}', [EquipmentController::class, 'delete']);
 
     Route::get('/vacations', [VacationController::class, 'get']);
+    Route::put('/vacations', [VacationController::class, 'update']);
   });
 });

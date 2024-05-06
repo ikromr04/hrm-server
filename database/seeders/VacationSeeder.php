@@ -23,7 +23,8 @@ class VacationSeeder extends Seeder
     foreach (range(1, 999) as $key) {
       Vacation::create([
         'user_id' => $faker->numberBetween(1, count($users)),
-        'date' => $faker->dateTimeBetween('-9 years', '+1 year'),
+        'year' => $faker->numberBetween(1991, 2024),
+        'month' => $faker->numberBetween(1, 12),
       ]);
     }
   }
