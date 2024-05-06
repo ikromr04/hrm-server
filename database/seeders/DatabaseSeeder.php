@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
       DepartmentSeeder::class,
       ActivitySeeder::class,
       EducationSeeder::class,
+      VacationSeeder::class,
     ]);
 
     $department_user = array(

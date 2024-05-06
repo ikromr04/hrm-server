@@ -9,6 +9,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VacationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -77,5 +78,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/equipments', [EquipmentController::class, 'store']);
     Route::put('/equipments/{id}', [EquipmentController::class, 'update']);
     Route::delete('/equipments/{id}', [EquipmentController::class, 'delete']);
+
+    Route::get('/vacations', [VacationController::class, 'get']);
   });
 });
